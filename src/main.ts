@@ -5,7 +5,7 @@ import { json } from 'body-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.use(json({ limit: '50mb'  }));
+  app.use(json({ limit: '500mb'  }));
   await app.listen(3000);
 }
 bootstrap();

@@ -12,38 +12,8 @@ export class AppController {
 
   @Get()
   async getHello(): Promise<string> {
- //   await this.getFile('Rating')
- //   await this.getFile('InfoMovie')
-    /*
-    let fileInfo = await this.download.readAllLine('Rating').toPromise();//fs.readFileSync('C:\\WRK\\nestjs\\film-collection\\movies_metadata.csv'); 
-    let arrayInfo = fileInfo.data.toString().split("\n");
-    let resultInfo = [];
-    let headers = arrayInfo[0].split(",");
-    let indexId = headers.indexOf('id');
-    let indexTitle = headers.indexOf('original_title');
-    console.log(headers[0]);
-    for(let i = 1; i < arrayInfo.length-1; i++){   
-      let raw = arrayInfo[i].split(/,\"|\",|,(?! )/);
-        resultInfo.push({id:parseInt(raw[indexId]), original_title:raw[indexTitle]});      
-    }
-    let str = await this.http.post('http://localhost:3000/infofilms',resultInfo).toPromise()
-    */
-   // let info = this.download.readAllLine('InfoMovie').toPromise();
-
-    /*
-     let fileRating = fs.readFileSync('C:\\WRK\\nestjs\\film-collection\\ratings.csv');
-     let arrayRating = fileRating.toString().split("\n");
-     let resultRating = [];
-     let headersRating = arrayRating[0].split(",");
-     let indexMovieId = headersRating.indexOf('movieId');
-     let indexRating = headersRating.indexOf('rating');
-     for(let i = 1; i < arrayRating.length-1; i++){   
-       let raw = arrayRating[i].split(',');
-         resultRating.push({moveId:parseInt(raw[indexMovieId]), rating:raw[indexRating]});      
-     }
-     let strRating = this.http.post('http://localhost:3000/rating',resultRating).subscribe(x=>console.log('rating create'))
-     */
-
+    await this.getFile('Rating')
+    await this.getFile('InfoMovie')
     let strRating = this.http.get('http://localhost:3000/rating').subscribe(x => console.log(x.data));
     return this.appService.getHello();
   }
@@ -72,6 +42,15 @@ export class AppController {
       let raw = array[i].split(delimiter);
         result.push({[field[0]]:parseInt(raw[indexId]), [field[1]]:raw[indexTitle]});      
     }
-    let strRating = await this.http.post('http://localhost:3000/'+apiLink,result).toPromise();
+    let chunckData=[];
+    for(let chunck = 0; chunck<result.length; chunck++){
+      chunckData.push(result[chunck]);
+      if(chunck%10000==0||chunck==result.length-1){
+        let strRating = await this.http.post('http://localhost:3000/'+apiLink,chunckData).toPromise();
+        chunckData=[];
+      }
+    }
+    console.log('data send');
+
   }
 }

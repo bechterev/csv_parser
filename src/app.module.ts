@@ -11,7 +11,7 @@ import { InfomovieService } from './films/services/infomovie/infomovie.service';
 @Module({
   imports: [MongooseModule.forRoot('mongodb+srv://film:260521@cluster0.jdgs4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'),
 FilmsModule,
-HttpModule.register({timeout:180000}),
+HttpModule.register({timeout:600000}),
 ],
   controllers: [AppController],
   providers: [AppService, DownloadFileService],

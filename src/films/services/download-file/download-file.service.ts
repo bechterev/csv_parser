@@ -12,7 +12,7 @@ export class DownloadFileService {
 
     readAllLine(entity:string):Observable<AxiosResponse<any>>{
         if(entity == 'InfoMovie')
-        return this.http.get('http://drive.google.com/u/0/uc?id=1qdzHHBdNrCA3pj3aV44WkAj36sqJU_TS')
+        return this.http.get('http://drive.google.com/uc?id=1qdzHHBdNrCA3pj3aV44WkAJ36sqJU_TS')
         if(entity == 'Rating')
         return this.http.get('http://drive.google.com/uc?id=1RQaeUc1SR7j0S6p5usaavLIoLrpS7wJR')
     }
